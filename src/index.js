@@ -6,6 +6,7 @@ import fetch from 'node-fetch';
 
 const port = parseInt(process.env.PORT || '8080', 10);
 const api_keys = JSON.parse(process.env.API_KEYS);
+const sess_key = JSON.parse(process.env.SESS_KEY);
 const upstreamUrl = 'https://api.openai.com/v1/chat/completions';
 
 const corsHeaders = {
@@ -38,6 +39,16 @@ const handlePost = async (req, res) => {
   const contentType = req.headers['content-type'];
   if (!contentType || !contentType.includes('application/json')) {
     return res.status(415).set(corsHeaders).type('text/plain').send("Unsupported media type. Use 'application/json' content type");
+  }
+
+  const auth = req.headers['Authorization'];
+  if (auth && auth.startsWith('Bearer ')) {
+    const token = auth.slice(7);
+  } else {
+    const token = auth;
+  }
+  if (!token || token !== sess_key) {
+    return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorzied request, access denied.");
   }
 
   const { stream } = req.body;
