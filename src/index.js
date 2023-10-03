@@ -36,7 +36,7 @@ const handleOptions = (req, res) => {
 
 const handlePost = async (req, res) => {
   const contentType = req.headers['content-type'];
-  if (!contentType || contentType !== 'application/json') {
+  if (!contentType || !contentTyp.includes('application/json')) {
     return res.status(415).set(corsHeaders).type('text/plain').send("Unsupported media type. Use 'application/json' content type");
   }
 
