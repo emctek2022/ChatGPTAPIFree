@@ -43,13 +43,14 @@ const handlePost = async (req, res) => {
 
   const auth = req.headers['Authorization'];
   if (auth && auth.startsWith('Bearer ')) {
-    const token = auth.slice(7);
+    var token = auth.slice(7);
+    if (!token || token !== sess_key) {
+      return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorzied request, access denied.");
+    }
   } else {
-    const token = auth;
-  }
-  if (!token || token !== sess_key) {
     return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorzied request, access denied.");
   }
+  
 
   const { stream } = req.body;
   if (stream != null && stream !== true && stream !== false) {
