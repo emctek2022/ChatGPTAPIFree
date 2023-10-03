@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 
 const port = parseInt(process.env.PORT || '8080', 10);
 const api_keys = JSON.parse(process.env.API_KEYS);
-const sess_key = JSON.parse(process.env.SESS_KEY);
+const sess_key = process.env.SESS_KEY;
 const upstreamUrl = 'https://api.openai.com/v1/chat/completions';
 
 const corsHeaders = {
