@@ -57,7 +57,7 @@ const handlePost = async (req, res) => {
   }
 
   try {
-    const authHeader = req.get('Authorization');
+    //const authHeader = req.get('Authorization');
     const authHeaderUpstream = `Bearer ${randomChoice(api_keys)}`;
 
     const requestHeader = {
