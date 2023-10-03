@@ -41,17 +41,16 @@ const handlePost = async (req, res) => {
     return res.status(415).set(corsHeaders).type('text/plain').send("Unsupported media type. Use 'application/json' content type");
   }
 
-  const auth = req.headers['Authorization'];
+  const auth = req.get('Authorization');
   if (auth && auth.startsWith('Bearer ')) {
-    var token = auth.slice(7);
+    const token = auth.slice(7);
     if (!token || token !== sess_key) {
-      return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorzied request, access denied.");
+        return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorized request, access denied.");
+      }
+    } else {
+      return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorized request, access denied.");
     }
-  } else {
-    return res.status(401).set(corsHeaders).type('text/plain').send("Unauthorzied request, access denied.");
-  }
   
-
   const { stream } = req.body;
   if (stream != null && stream !== true && stream !== false) {
     return res.status(400).set(corsHeaders).type('text/plain').send('The `stream` parameter must be a boolean value');
